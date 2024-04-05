@@ -3,6 +3,6 @@ code: main.py
 command: >-
   python main.py 
 environment: azureml:basic-env-scikit@latest
-compute: azureml:testdev707
-experiment_name: diabetes-intial-train-job
+compute: azureml:test707
+experiment_name: diabetes-example
 description: Train a Logistic Regression classification model on the diabetes dataset that is stored locally.
