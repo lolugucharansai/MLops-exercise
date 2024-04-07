@@ -43,7 +43,7 @@ def train_model(reg_rate, X_train, X_test, y_train, y_test):
     # calculate accuracy
     y_pred = model.predict(X_test)
     acc = np.average(y_pred == y_test)
-    mlflow.log_metric("Accuracy", np.float(acc))
+    mlflow.log_metric("Accuracy", float(acc))  # Changed np.float to float
 
     # create confusion matrix
     conf_matrix = confusion_matrix(y_true=y_test, y_pred=y_pred)

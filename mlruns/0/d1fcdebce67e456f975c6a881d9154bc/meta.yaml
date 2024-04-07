@@ -1,0 +1,15 @@
+artifact_uri: file:///workspaces/MLops-exercise/mlruns/0/d1fcdebce67e456f975c6a881d9154bc/artifacts
+end_time: 1712468310622
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: d1fcdebce67e456f975c6a881d9154bc
+run_name: upbeat-finch-419
+run_uuid: d1fcdebce67e456f975c6a881d9154bc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1712468304714
+status: 3
+tags: []
+user_id: codespace

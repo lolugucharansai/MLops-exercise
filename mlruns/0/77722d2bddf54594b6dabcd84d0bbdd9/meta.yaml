@@ -1,0 +1,15 @@
+artifact_uri: file:///workspaces/MLops-exercise/mlruns/0/77722d2bddf54594b6dabcd84d0bbdd9/artifacts
+end_time: 1712468417369
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 77722d2bddf54594b6dabcd84d0bbdd9
+run_name: honorable-tern-236
+run_uuid: 77722d2bddf54594b6dabcd84d0bbdd9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1712468407588
+status: 3
+tags: []
+user_id: codespace

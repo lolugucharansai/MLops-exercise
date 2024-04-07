@@ -8,7 +8,7 @@ trial:
     --diabetes-csv ${{inputs.diabetes}} 
     --learning-rate ${{search_space.learning_rate}}
     --n-estimators ${{search_space.n_estimators}}
-  environment: azureml:basic-env-scikit@latest
+  environment: azureml:env1@latest
 inputs:
   diabetes:
     path: azureml:diabetes-data:1
