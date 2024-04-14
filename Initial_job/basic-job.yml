@@ -2,7 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: main.py
 command: >-
   python main.py 
-environment: azureml:basic-env-scikit@latest
-compute: azureml:testdev707
-experiment_name: diabetes-intial-train-job
+environment: azureml:env1@latest
+compute: azureml:test707
+experiment_name: diabetes-example
 description: Train a Logistic Regression classification model on the diabetes dataset that is stored locally.
