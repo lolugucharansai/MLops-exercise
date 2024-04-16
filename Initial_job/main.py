@@ -12,7 +12,7 @@ def main(args):
     mlflow.autolog()
 
     # read data
-    df = pd.read_csv('/workspaces/MLops-exercise/initial_setup/data/diabeties.csv')
+    df = pd.read_csv(r'/workspaces/MLops-exercise/initial_setup/data/diabeties.csv')
     
     # process data
     X_train, X_test, y_train, y_test = process_data(df)
