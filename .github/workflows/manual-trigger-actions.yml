@@ -17,6 +17,4 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: submit a train job
       run: |
-       az configure --defaults group="diabetes-dev-rg"
-       az configure --defaults workspace="aml-diabetes-dev"
-       az ml job create --file /workspaces/MLops-exercise/Initial_job/data-input-job.yml
+       az ml job create --file /workspaces/MLops-exercise/Initial_job/data-input-job.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
