@@ -19,7 +19,7 @@ jobs:
           python -m pip install flake8
           python -m pip install -r requirements.txt
       - name: Run linting tests
-        run: flake8 MLops-exercise/Initial_job/main2.py
+        run: flake8 Initial_job/main2.py
   unit-tests:
     name: Run Unit Tests
     runs-on: ubuntu-latest
