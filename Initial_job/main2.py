@@ -49,7 +49,7 @@ def process_data(df):
 
 
 def train_model(reg_rate, X_train, X_test, y_train, y_test):
-    # train model
+    # train modeel
     model = LogisticRegression(C=1/reg_rate, solver="liblinear").fit(X_train, y_train)
     return model
 
@@ -82,5 +82,4 @@ if __name__ == "__main__":
 
     print("*" * 60)
     print("\n\n")
-
     
