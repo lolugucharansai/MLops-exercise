@@ -29,7 +29,7 @@ def process_data(df):
     X, y = df[
         [
             'Pregnancies',
-            'PlasmaGlucose', 
+            'PlasmaGlucose',
             'DiastolicBloodPressure',
             'TricepsThickness',
             'SerumInsulin',
@@ -50,7 +50,8 @@ def process_data(df):
 
 def train_model(reg_rate, X_train, X_test, y_train, y_test):
     # train model
-    LogisticRegression(C=1/reg_rate, solver="liblinear").fit(X_train, y_train)
+    model = LogisticRegression(C=1/reg_rate, solver="liblinear").fit(X_train, y_train)
+    return model
 
 
 def parse_args():
@@ -81,5 +82,3 @@ if __name__ == "__main__":
 
     print("*" * 60)
     print("\n\n")
-
-    
