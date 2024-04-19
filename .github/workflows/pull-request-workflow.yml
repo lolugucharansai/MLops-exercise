@@ -1,19 +1,14 @@
 name: pull-request-workflow
 
 on:
-    push:
-      branches:
-        - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-    check-pullrequest:
-        runs-on: ubuntu-latest
-        steps:
-        - name: Placeholder
-          run: |
-            echo "Will add code checks here in next challenge!"
-          
-
-
-
-
+  check-pullrequest:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Placeholder
+      run: |
+        echo "Will add code checks here in next challenge!"
