@@ -19,16 +19,16 @@ jobs:
               creds: ${{secrets.AZURE_CREDENTIALS}}
           - name: Submit a train job
             run: |
-                az ml job create --file Initial_job/train_dev.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream
+                az ml job create --file Initial_job/train_dev.yml --name train-dev --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream
           - name: Save trained model
             run: |
                  # Download the model from the job's outputs
-                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $run_id --output-dir ./outputs
+                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name train-dev --output-dir ./outputs
           - name: Upload model as artifact
             uses: actions/upload-artifact@v2
             with:
               name: model
-              path: ./outputs/model
+              path: ./outputs/model/model.pkl
       
         production:
           needs: experiment
@@ -51,10 +51,10 @@ jobs:
           - name: Retrain model
             run: |
              echo "Retraining model"
-             run_id=$(az ml job create --file /workspaces/MLops-exercise/retrain_model/retrain_model.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream | grep "RunId:" | awk '{print $2}')
+               az ml job create --file /workspaces/MLops-exercise/retrain_model/retrain_model.yml --name retrain-model --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream 
           - name: Save retrained model
             run: |
                  # Download the model from the job's outputs
-                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $run_id --output-dir ./outputs
+                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name retrain-model --output-dir ./outputs
 
           
