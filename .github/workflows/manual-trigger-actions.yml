@@ -19,8 +19,7 @@ jobs:
               creds: ${{secrets.AZURE_CREDENTIALS}}
           - name: Submit a train job
             run: |
-             run_id=$(az ml job create --file Initial_job/train_dev.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream | grep "RunId:" | awk '{print $2}')
-          
+                run_id=$(az ml job create --file Initial_job/train_dev.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream | grep -Po 'RunId: \K.*')
           - name: Save trained model
             run: |
                  # Download the model from the job's outputs
@@ -57,5 +56,5 @@ jobs:
             run: |
                  # Download the model from the job's outputs
                  az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $run_id --output-dir ./outputs
-                 
+
           
