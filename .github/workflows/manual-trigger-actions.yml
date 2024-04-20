@@ -19,11 +19,12 @@ jobs:
               creds: ${{secrets.AZURE_CREDENTIALS}}
           - name: Submit a train job
             run: |
-                az ml job create --file Initial_job/train_dev.yml --name train-dev --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream
+                job_name="train-dev-$(date +%Y%m%d%H%M%S)"
+                az ml job create --file Initial_job/train_dev.yml --name $job_name --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream
           - name: Save trained model
             run: |
                  # Download the model from the job's outputs
-                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name train-dev --output-path ./outputs
+                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $job_name --output-path ./outputs
           - name: Upload model as artifact
             uses: actions/upload-artifact@v2
             with:
@@ -51,10 +52,9 @@ jobs:
           - name: Retrain model
             run: |
              echo "Retraining model"
-               az ml job create --file /workspaces/MLops-exercise/retrain_model/retrain_model.yml --name retrain-model --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream 
+             job_name="retrain-model-$(date +%Y%m%d%H%M%S)"
+             az ml job create --file /workspaces/MLops-exercise/retrain_model/retrain_model.yml --name $job_name --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream 
           - name: Save retrained model
             run: |
                  # Download the model from the job's outputs
-                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name retrain-model --output-path ./outputs
-
-          
+                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $job_name --output-path ./outputs
