@@ -1,5 +1,12 @@
 $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+<<<<<<< HEAD
 name: diabetes-data
 version: 1
 path: data
 description: Dataset pointing to diabetes data stored as CSV on local computer. Data is uploaded to default datastore.
+=======
+name: diabetes-prod
+version: 1
+path: data/prod-data
+description: Dataset pointing to diabetes data stored as CSV on local computer. Data is uploaded to default datastore.
+>>>>>>> 8023c72 (ok)
