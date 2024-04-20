@@ -33,7 +33,7 @@ jobs:
            ls -la
            ls -la ./artifacts
            # Rename the model file to model.pkl
-           mv ./artifacts/model.pkl ./model.pkl
+           mv ./artifacts/model/model.pkl ./model.pkl
     - name: Upload model as artifact
       uses: actions/upload-artifact@v2
       with:
@@ -49,4 +49,4 @@ jobs:
            ls -la
            ls -la ./artifacts
            # Rename the model file to model.pkl
-           mv ./artifacts/model.pkl ./model.pkl
+           mv ./artifacts/model/model.pkl ./model.pkl
