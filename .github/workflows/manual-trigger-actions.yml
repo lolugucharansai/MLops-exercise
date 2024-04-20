@@ -5,64 +5,42 @@ on:
       - main
 
 jobs:
-        experiment:
-          runs-on: ubuntu-latest
-          environment: development
-          steps:
-          - name: Check out repo
-            uses: actions/checkout@v2
-          - name: Install az ml extension
-            run: az extension add -n ml -y
-          - name: Azure login
-            uses: azure/login@v1
-            with:
-              creds: ${{secrets.AZURE_CREDENTIALS}}
-          - name: Submit a train job
-            id: train
-            run: |
-                job_name="train-dev-$(date +%Y%m%d%H%M%S)"
-                echo "JOB_NAME=$job_name" >> $GITHUB_ENV
-                az ml job create --file Initial_job/train_dev.yml --name $job_name --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream
-          - name: Save trained model
-            run: |
-                 # Change the current working directory and Download the model from the job's outputs
-                 mkdir -p ./outputs
-                 cd ./outputs
-                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME
-          - name: Upload model as artifact
-            uses: actions/upload-artifact@v2
-            with:
-              name: model
-              path: ./outputs/model/model.pkl
-      
-        production:
-          needs: experiment
-          runs-on: ubuntu-latest
-          environment: production
-          steps:
-          - name: Check out repo
-            uses: actions/checkout@v2
-          - name: Set up Python
-            uses: actions/setup-python@v2
-            with:
-              python-version: '3.x'
-          - name: Install dependencies
-            run: pip install -r requirements.txt
-          - name: Download model artifact
-            uses: actions/download-artifact@v2
-            with:
-              name: model
-              path: ./outputs
-          - name: Retrain model
-            id: retrain
-            run: |
-             echo "Retraining model"
-             job_name="retrain-model-$(date +%Y%m%d%H%M%S)"
-             echo "JOB_NAME=$job_name" >> $GITHUB_ENV
-             az ml job create --file /workspaces/MLops-exercise/retrain_model/retrain_model.yml --name $job_name --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream 
-          - name: Save retrained model
-            run: |
-                 # Change the current working directory and Download the model from the job's outputs
-                 mkdir -p ./outputs
-                 cd ./outputs
-                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME
+  experiment:
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@v2
+    - name: Install az ml extension
+      run: az extension add -n ml -y
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: Submit a train job
+      id: train
+      run: |
+          job_name="train-dev-$(date +%Y%m%d%H%M%S)"
+          echo "JOB_NAME=$job_name" >> $GITHUB_ENV
+          az ml job create --file Initial_job/train_dev.yml --name $job_name --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream
+    - name: Save trained model
+      run: |
+           # Change the current working directory and Download the model from the job's outputs
+           mkdir -p ./outputs
+           cd ./outputs
+           az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME
+           # Rename the model file to model.pkl
+           mv ./artifacts/model.pkl ./model.pkl
+    - name: Upload model as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: model
+        path: ./outputs/model.pkl
+    - name: Save retrained model
+      run: |
+           # Change the current working directory and Download the model from the job's outputs
+           mkdir -p ./outputs
+           cd ./outputs
+           az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME
+           # Rename the model file to model.pkl
+           mv ./artifacts/model.pkl ./model.pkl
