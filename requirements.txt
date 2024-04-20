@@ -1,5 +1,5 @@
 pytest==7.1.2
 mlflow==2.10.0
 pandas==1.4.3
-sklearn==0.0
+sklearn
 scikit-learn==1.1.1
