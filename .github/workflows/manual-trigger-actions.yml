@@ -26,7 +26,7 @@ jobs:
           - name: Save trained model
             run: |
                  # Download the model from the job's outputs
-                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME --output-path ./outputs
+                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME --output ./outputs
           - name: Upload model as artifact
             uses: actions/upload-artifact@v2
             with:
@@ -61,4 +61,4 @@ jobs:
           - name: Save retrained model
             run: |
                  # Download the model from the job's outputs
-                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME --output-path ./outputs
+                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME --output ./outputs
