@@ -1,4 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: 
 model:
   name: sample-mlflow-sklearn-model
   version: 1
