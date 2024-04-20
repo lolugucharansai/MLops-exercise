@@ -3,19 +3,58 @@ on:
   push:
     branches:
       - main
+
 jobs:
-  experiment:
-    runs-on: ubuntu-latest
-    environment: development
-    steps:
-    - name: Check out repo
-      uses: actions/checkout@main
-    - name: Install az ml extension
-      run: az extension add -n ml -y
-    - name: Azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: submit a train job
-      run: |
-       az ml job create --file Initial_job/data-input-job.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream
+        experiment:
+          runs-on: ubuntu-latest
+          environment: development
+          steps:
+          - name: Check out repo
+            uses: actions/checkout@v2
+          - name: Install az ml extension
+            run: az extension add -n ml -y
+          - name: Azure login
+            uses: azure/login@v1
+            with:
+              creds: ${{secrets.AZURE_CREDENTIALS}}
+          - name: Submit a train job
+            run: |
+             run_id=$(az ml job create --file Initial_job/data-input-job.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream | grep "RunId:" | awk '{print $2}')
+          
+          - name: Save trained model
+            run: |
+                 # Download the model from the job's outputs
+                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $run_id --output-dir ./outputs
+          - name: Upload model as artifact
+            uses: actions/upload-artifact@v2
+            with:
+              name: model
+              path: ./outputs/model
+      
+        production:
+          needs: experiment
+          runs-on: ubuntu-latest
+          environment: production
+          steps:
+          - name: Check out repo
+            uses: actions/checkout@v2
+          - name: Set up Python
+            uses: actions/setup-python@v2
+            with:
+              python-version: '3.x'
+          - name: Install dependencies
+            run: pip install -r requirements.txt
+          - name: Download model artifact
+            uses: actions/download-artifact@v2
+            with:
+              name: model
+              path: ./outputs
+          - name: Retrain model
+            run: |
+             echo "Retraining model"
+             run_id=$(az ml job create --file Retrain_job/retrain-job.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream | grep "RunId:" | awk '{print $2}')
+          - name: Save retrained model
+            run: |
+                 # Download the model from the job's outputs
+                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $run_id --output-dir ./outputs
+          
