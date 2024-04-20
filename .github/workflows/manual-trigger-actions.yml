@@ -19,7 +19,7 @@ jobs:
               creds: ${{secrets.AZURE_CREDENTIALS}}
           - name: Submit a train job
             run: |
-             run_id=$(az ml job create --file Initial_job/data-input-job.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream | grep "RunId:" | awk '{print $2}')
+             run_id=$(az ml job create --file Initial_job/train_dev.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream | grep "RunId:" | awk '{print $2}')
           
           - name: Save trained model
             run: |
@@ -52,9 +52,10 @@ jobs:
           - name: Retrain model
             run: |
              echo "Retraining model"
-             run_id=$(az ml job create --file Retrain_job/retrain-job.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream | grep "RunId:" | awk '{print $2}')
+             run_id=$(az ml job create --file /workspaces/MLops-exercise/retrain_model/retrain_model.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream | grep "RunId:" | awk '{print $2}')
           - name: Save retrained model
             run: |
                  # Download the model from the job's outputs
                  az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $run_id --output-dir ./outputs
+                 
           
