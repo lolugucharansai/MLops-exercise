@@ -34,11 +34,6 @@ jobs:
            mkdir -p ./outputs
            cd ./outputs
            az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME
-           echo $?
-           ls -la
-           ls -la ./artifacts
-           # Rename the model file to model.pkl
-           mv ./artifacts/model/model.pkl ./model.pkl
     - name: Upload model as artifact
       uses: actions/upload-artifact@v2
       with:
@@ -53,10 +48,12 @@ jobs:
     steps:
     - name: Check out repo
       uses: actions/checkout@v2
+    - name: Install az ml extension
+      run: az extension add -n ml -y
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.11'
+        python-version: '3.10.3'
     - name: Install dependencies
       run: pip install -r requirements.txt
     - name: Azure login
@@ -81,8 +78,3 @@ jobs:
            mkdir -p ./outputs
            cd ./outputs
            az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME
-           echo $?
-           ls -la
-           ls -la ./artifacts
-           # Rename the model file to model.pkl
-           mv ./artifacts/model/model.pkl ./model.pkl
