@@ -3,19 +3,52 @@ on:
   push:
     branches:
       - main
+
 jobs:
   experiment:
     runs-on: ubuntu-latest
     environment: development
     steps:
     - name: Check out repo
-      uses: actions/checkout@main
+      uses: actions/checkout@v2
     - name: Install az ml extension
       run: az extension add -n ml -y
     - name: Azure login
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: submit a train job
+    - name: Submit a train job
       run: |
-       az ml job create --file Initial_job/data-input-job.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
+         az ml job create --file Initial_job/data-input-job.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream
+    
+    - name: Save trained model
+      run: |
+           # Download the model from the job's outputs
+           az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name <job-name> --output-dir ./outputs
+           # Upload the model to Azure Blob Storage
+           az storage blob upload --account-name <storage-account-name> --account-key ${{secrets.AZURE_STORAGE_ACCOUNT_KEY}} --container-name <container-name> --name <blob-name> --type block --file ./outputs/model
+
+  production:
+    needs: experiment
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@v2
+    - name: Install az ml extension
+      run: az extension add -n ml -y
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: Load trained model
+      run: |
+        # Parse the Azure credentials JSON
+        creds=$(echo '${{secrets.AZURE_CREDENTIALS}}' | jq -r .)
+        storageAccountName=$(echo $creds | jq -r .storageAccountName)
+        storageAccountKey=$(echo $creds | jq -r .storageAccountKey)
+        # Download the model from Azure Blob Storage
+        az storage blob download --account-name $storageAccountName --account-key $storageAccountKey --container-name <container-name> --name <blob-name> --file ./outputs/model
+    - name: Submit a train job in production
+      run: |
+         az ml job create --file Initial_job/data-input-job.yml --resource-group diabetes-prod-rg --workspace-name aml-diabetes-prod --stream
