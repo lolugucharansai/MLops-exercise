@@ -29,6 +29,9 @@ jobs:
            mkdir -p ./outputs
            cd ./outputs
            az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME
+           echo $?
+           ls -la
+           ls -la ./artifacts
            # Rename the model file to model.pkl
            mv ./artifacts/model.pkl ./model.pkl
     - name: Upload model as artifact
@@ -42,5 +45,8 @@ jobs:
            mkdir -p ./outputs
            cd ./outputs
            az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME
+           echo $?
+           ls -la
+           ls -la ./artifacts
            # Rename the model file to model.pkl
            mv ./artifacts/model.pkl ./model.pkl
