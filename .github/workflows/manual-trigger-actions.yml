@@ -25,8 +25,10 @@ jobs:
                 az ml job create --file Initial_job/train_dev.yml --name $job_name --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream
           - name: Save trained model
             run: |
-                 # Download the model from the job's outputs
-                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME --output ./outputs
+                 # Change the current working directory and Download the model from the job's outputs
+                 mkdir -p ./outputs
+                 cd ./outputs
+                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME
           - name: Upload model as artifact
             uses: actions/upload-artifact@v2
             with:
@@ -60,5 +62,7 @@ jobs:
              az ml job create --file /workspaces/MLops-exercise/retrain_model/retrain_model.yml --name $job_name --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream 
           - name: Save retrained model
             run: |
-                 # Download the model from the job's outputs
-                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME --output ./outputs
+                 # Change the current working directory and Download the model from the job's outputs
+                 mkdir -p ./outputs
+                 cd ./outputs
+                 az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME
