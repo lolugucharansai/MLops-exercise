@@ -81,9 +81,7 @@ jobs:
            mv ./artifacts/model/model.pkl ./model.pkl
     - name: Register model
       run: |
-        model_name="diabetes_model"
-        model_path="azureml://jobs/$JOB_NAME/outputs/artifacts/model"
-        az ml model create --name $model_name --path $model_path --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
+        python register_model.py --model_name "diabetes_model" --model_path "$JOB_NAME"
     - name: Create online endpoint
       run: |
         endpoint_name="diabetes_endpoint"
