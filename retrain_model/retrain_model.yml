@@ -5,7 +5,7 @@ command: >-
   --diabetes-csv ${{inputs.diabetes}}
 inputs:
   diabetes:
-    path: azureml:prod-diabetes:1
+    path: azureml:diabetes-prod:1
     mode: ro_mount
 environment: azureml:env1@latest
 compute: azureml:cluster707
