@@ -39,12 +39,9 @@ jobs:
         model_name="diabetes_model"
         model_path="azureml://jobs/$JOB_NAME/outputs/artifacts/model"
         az ml model create --name $model_name --type "mlflow_model" --path $model_path --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
-    - name: Create online endpoint
-      run: |
-        endpoint_name="diabetes"
-        az ml online-endpoint create --name $endpoint_name -f endpoint/enpoint-create.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
+   
     - name: Deploy model to online endpoint
       run: |
         deployment_name="diabetes_deployment"
         model_name="diabetes_model"
-        az ml online-deployment create --name $deployment_name --endpoint $endpoint_name --model ${model_name}@latest --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
+        az ml online-deployment create --name $deployment_name --endpoint diabeties --model ${model_name}@latest --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
