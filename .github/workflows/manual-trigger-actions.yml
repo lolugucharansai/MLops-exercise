@@ -42,7 +42,7 @@ jobs:
     - name: Create online endpoint
       run: |
         endpoint_name="diabetes"
-        az ml online-endpoint create --name $endpoint_name -f endpoint/endpoint-create.yml
+        az ml online-endpoint create --name $endpoint_name -f endpoint/endpoint-create.yml  --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
     - name: Deploy model to online endpoint
       run: |
         deployment_name="diabetes_deployment"
