@@ -1,15 +1,19 @@
+import argparse
+import glob
 import pickle
 import pandas as pd
 from sklearn.model_selection import train_test_split
-import argparse
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('--diabetes-csv', type=str, help='Path to the diabetes CSV file')
 args = parser.parse_args()
 
-# Load the diabetes data
-data = pd.read_csv(args.diabetes_csv)
+# Read data
+data_path = args.diabetes_csv
+all_files = glob.glob(data_path + "/*.csv")
+data = pd.concat((pd.read_csv(f) for f in all_files), sort=False)
+
 X, y = data.drop('Outcome', axis=1), data['Outcome']
 
 # Split the data into training and testing sets
