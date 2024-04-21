@@ -76,4 +76,4 @@ jobs:
         run: |
             deployment_name="diabetes_deployment"
             model_name="diabetes_model"
-            az ml online-deployment create --name  diabetes_deployment --endpoint diabetes -f endpoint/deployment-endpoint.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --all-traffic
+            az ml online-deployment create --name  diabetesdeployment --endpoint diabetesend -f endpoint/deployment-endpoint.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --all-traffic
