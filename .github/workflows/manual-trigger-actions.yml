@@ -44,4 +44,4 @@ jobs:
       run: |
         deployment_name="diabetes_deployment"
         model_name="diabetes_model"
-        az ml online-deployment create --name $deployment_name --endpoint diabeties --model ${model_name}@latest --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
+        az ml online-deployment create --name $deployment_name --endpoint diabetes --model ${model_name}@latest --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
