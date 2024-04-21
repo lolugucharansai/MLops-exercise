@@ -1,7 +1,9 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: diabetes_deployment
+endpoint_name: diabetes
 model:
-  name: sample-mlflow-sklearn-model
-  version: 1
+  name: diabetes_model
+  version: '@latest'
   path: azureml://jobs/$JOB_NAME/outputs/artifacts/model
   type: mlflow_model
 instance_type: Standard_F4s_v2
