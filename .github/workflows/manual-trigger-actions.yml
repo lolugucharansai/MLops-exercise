@@ -7,7 +7,7 @@ env:
   DEV_AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   PROD_AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
 jobs:
-  experiment:
+  development:
     runs-on: ubuntu-latest
     environment: 
       name: development
@@ -40,7 +40,7 @@ jobs:
         name: model
         path: ./outputs/model.pkl
   production:
-    needs: experiment
+    needs: development
     runs-on: ubuntu-latest
     environment: 
       name: production
@@ -79,4 +79,4 @@ jobs:
            az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME
            # Move the model to the correct location
            mv ./artifacts/model/model.pkl ./model.pkl
-           
+
