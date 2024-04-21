@@ -4,8 +4,8 @@ on:
     branches:
       - main
 env:
-  DEV_AZURE_CREDENTIALS: ${{ secrets.DEV_AZURE_CREDENTIALS }}
-  PROD_AZURE_CREDENTIALS: ${{ secrets.PROD_AZURE_CREDENTIALS }}
+  DEV_AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  PROD_AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
 jobs:
   development:
     runs-on: ubuntu-latest
