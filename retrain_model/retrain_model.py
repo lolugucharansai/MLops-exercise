@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--diabetes-csv', type=str, help='Path to the diabetes CSV file')
 args = parser.parse_args()
 
-# Load the prod-diabetes data
+# Load the diabetes data
 data = pd.read_csv(args.diabetes_csv)
 X, y = data.drop('Outcome', axis=1), data['Outcome']
 

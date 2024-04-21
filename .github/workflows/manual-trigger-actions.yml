@@ -79,3 +79,4 @@ jobs:
            az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME
            # Move the model to the correct location
            mv ./artifacts/model/model.pkl ./model.pkl
+           
