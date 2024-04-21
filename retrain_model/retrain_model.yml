@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code: retrain_model.py
+code: Initial_job/main2.py
 command: >-
   python retrain_model.py 
   --diabetes-csv ${{inputs.diabetes}}

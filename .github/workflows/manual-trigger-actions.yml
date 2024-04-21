@@ -79,4 +79,17 @@ jobs:
            az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME
            # Move the model to the correct location
            mv ./artifacts/model/model.pkl ./model.pkl
-
+    - name: Register model
+      run: |
+        model_name="diabetes_model"
+        model_path="azureml://jobs/$JOB_NAME/outputs/artifacts/model"
+        az ml model create --name $model_name --path $model_path --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
+    - name: Create online endpoint
+      run: |
+        endpoint_name="diabetes_endpoint"
+        az ml online-endpoint create --name $endpoint_name --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
+    - name: Deploy model to online endpoint
+      run: |
+        deployment_name="diabetes_deployment"
+        model_name="diabetes_model"
+        az ml online-deployment create --name $deployment_name --endpoint $endpoint_name --model $model_name=1 --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
