@@ -2,7 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.sch
 model:
   name: sample-mlflow-sklearn-model
   version: 1
-  path: model
+  path: azureml://jobs/$JOB_NAME/outputs/artifacts/model
   type: mlflow_model
 instance_type: Standard_F4s_v2
 instance_count: 1
