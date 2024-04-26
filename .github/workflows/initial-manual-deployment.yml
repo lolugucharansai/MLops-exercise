@@ -1,8 +1,5 @@
 name: Train Model
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 env:
   DEV_AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
