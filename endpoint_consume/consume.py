@@ -28,13 +28,13 @@ def predict_diabetes(pregnancies, plasma_glucose, diastolic_blood_pressure, tric
     }
 
     body = str.encode(json.dumps(data))
-    url = 'https://aml-diabetes-dev-lmtrj.eastus.inference.ml.azure.com/score'
+    url = 'https://diabetesend.eastus.inference.ml.azure.com/score'
 
     api_key = ''  # Replace this with the primary/secondary key or AMLToken for the endpoint
     if not api_key:
         raise Exception("A key should be provided to invoke the endpoint")
-
-    headers = {'Content-Type':'application/json', 'Authorization':('Bearer '+ api_key), 'azureml-model-deployment': 'diabetes-model-17' }
+ 
+    headers = {'Content-Type':'application/json', 'Authorization':('Bearer '+ api_key), 'azureml-model-deployment': 'diabetesdeployment' }
 
     req = urllib.request.Request(url, body, headers)
 
