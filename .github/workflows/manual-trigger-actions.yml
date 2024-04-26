@@ -34,7 +34,7 @@ jobs:
                az ml model create --name $model_name --type "mlflow_model" --path $model_path --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
       - name: Deploy model to online endpoint
         run: |
-               deployment_name="diabetes_deployment"
+               deployment_name="diabetesdeployment"
                model_name="diabetes_model"
                # Get the latest version of the model
                latest_version=$(az ml model list --name $model_name --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --query "[?name=='$model_name'].version" -o tsv | sort -nr | head -n 1)
