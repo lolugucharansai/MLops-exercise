@@ -7,40 +7,7 @@ env:
   DEV_AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   PROD_AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
 jobs:
-  # development:
-  #   runs-on: ubuntu-latest
-  #   environment: 
-  #     name: development
-  #   steps:
-  #   - name: Check out repo
-  #     uses: actions/checkout@v2
-  #   - name: Install az ml extension
-  #     run: az extension add -n ml -y
-  #   - name: Azure login
-  #     uses: azure/login@v1
-  #     with:
-  #       creds: ${{ env.DEV_AZURE_CREDENTIALS }}
-  #   - name: Submit a train job
-  #     id: train
-  #     run: |
-  #         job_name="train-dev-$(date +%Y%m%d%H%M%S)"
-  #         echo "JOB_NAME=$job_name" >> $GITHUB_ENV
-  #         az ml job create --file Initial_job/train_dev.yml --name $job_name --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream
-  #   - name: Save trained model
-  #     run: |
-  #          # Change the current working directory and Download the model from the job's outputs
-  #          mkdir -p ./outputs
-  #          cd ./outputs
-  #          az ml job download --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --name $JOB_NAME
-  #          # Move the model to the correct location
-  #          mv ./artifacts/model/model.pkl ./model.pkl
-  #   - name: Upload model as artifact
-  #     uses: actions/upload-artifact@v2
-  #     with:
-  #       name: model
-  #       path: ./outputs/model.pkl
   production:
-    # needs: development
     runs-on: ubuntu-latest
     environment: 
         name: production
@@ -49,12 +16,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Install az ml extension
         run: az extension add -n ml -y
-      # - name: Set up Python
-      #   uses: actions/setup-python@v2
-      #   with:
-      #     python-version: '3.x'
-      # - name: Install dependencies
-      #   run: pip install -r requirements.txt
       - name: Azure login
         uses: azure/login@v1
         with:
@@ -68,18 +29,17 @@ jobs:
                az ml job create --file retrain_model/retrain_model.yml --name $job_name --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream 
       - name: Register model
         run: |
-            model_name="diabetes_model"
-            model_path="azureml://jobs/$JOB_NAME/outputs/artifacts/model"
-            az ml model create --name $model_name --type "mlflow_model" --path $model_path --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
-       
-            - name: Deploy model to online endpoint
-            run: |
-                deployment_name="diabetes_deployment"
-                model_name="diabetes_model"
-                # Get the latest version of the model
-                latest_version=$(az ml model list --name $model_name --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --query "[?name=='$model_name'].version" -o tsv | sort -nr | head -n 1)
-                model_id="$model_name:$latest_version"
-          
-                # Update the deployment with the latest version of the model
-                az ml online-deployment update --name $deployment_name --endpoint diabetesend --set model.id=$model_id --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
-                az ml online-endpoint update --name diabetesend --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --set applicationInsights=enabled
+               model_name="diabetes_model"
+               model_path="azureml://jobs/$JOB_NAME/outputs/artifacts/model"
+               az ml model create --name $model_name --type "mlflow_model" --path $model_path --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
+      - name: Deploy model to online endpoint
+        run: |
+               deployment_name="diabetes_deployment"
+               model_name="diabetes_model"
+               # Get the latest version of the model
+               latest_version=$(az ml model list --name $model_name --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --query "[?name=='$model_name'].version" -o tsv | sort -nr | head -n 1)
+               model_id="$model_name:$latest_version"
+             
+               # Update the deployment with the latest version of the model
+               az ml online-deployment update --name $deployment_name --endpoint diabetesend --set model.id=$model_id --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
+               az ml online-endpoint update --name diabetesend --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --set applicationInsights=enabled
