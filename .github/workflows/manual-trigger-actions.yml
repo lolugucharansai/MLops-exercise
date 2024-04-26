@@ -77,3 +77,4 @@ jobs:
             deployment_name="diabetes_deployment"
             model_name="diabetes_model"
             az ml online-deployment create --name  diabetesdeployment --endpoint diabetesend -f endpoint/deployment-endpoint.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --all-traffic
+            az ml online-endpoint update --name diabetesend --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --set applicationInsights=enabled
