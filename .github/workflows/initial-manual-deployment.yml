@@ -78,3 +78,16 @@ jobs:
             deployment_name="diabetes_deployment"
             model_name="diabetes_model"
             az ml online-deployment create --name  diabetesdeployment --endpoint diabetesend -f endpoint/deployment-endpoint.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --all-traffic
+      - name: Get new API key
+        id: getkey
+        run: echo "API_KEY=$(az ml online-endpoint show --name diabetesend --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --query apiKey -o tsv)" >> $GITHUB_ENV
+      - name: Update Streamlit secrets
+        run: |
+              curl -X POST https://api.streamlit.io/v1/apps/diabetes-predict-ml/secrets \
+              -H 'Streamlit-Secret-Token: ${{ secrets.STREAMLIT_SECRET_TOKEN }}' \
+              -H 'Content-Type: application/json' \
+              -d '{
+                    "secrets": {
+                      "API_KEY": "${{ env.API_KEY }}"
+                    }
+                  }'
