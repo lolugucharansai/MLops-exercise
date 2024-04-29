@@ -1,5 +1,5 @@
 import streamlit as st
-from endpoint_consume.consume import predict_diabetes  # Import the function from apiendpoint.py
+from Frontend.consume import predict_diabetes  # Import the function from apiendpoint.py
 
 def main():
     st.set_page_config(page_title='Diabetes Prediction App', page_icon=':hospital:', layout='wide')
