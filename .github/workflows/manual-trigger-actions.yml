@@ -46,20 +46,20 @@ jobs:
     environment: 
         name: production
     steps:
-      # - name: Check out repo
-      #   uses: actions/checkout@v2
-      # - name: Install az ml extension
-      #   run: az extension add -n ml -y
-      # - name: Set up Python
-      #   uses: actions/setup-python@v2
+      - name: Check out repo
+        uses: actions/checkout@v2
+      - name: Install az ml extension
+        run: az extension add -n ml -y
+      - name: Set up Python
+        uses: actions/setup-python@v2
       #   with:
       #     python-version: '3.x'
       # - name: Install dependencies
       #   run: pip install -r requirements.txt
-      # - name: Azure login
-      #   uses: azure/login@v1
-      #   with:
-      #     creds: ${{ env.PROD_AZURE_CREDENTIALS }}
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ env.PROD_AZURE_CREDENTIALS }}
       # - name: Retrain model
       #   id: retrain
       #   run: |
