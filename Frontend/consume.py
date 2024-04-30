@@ -36,7 +36,7 @@ def predict_diabetes(pregnancies, plasma_glucose, diastolic_blood_pressure, tric
 
     url = 'https://diabetesend.eastus.inference.ml.azure.com/score'
     # Replace this with the primary/secondary key, AMLToken, or Microsoft Entra ID token for the endpoint
-    api_key = 'GnxJfoqzo2zhFELVye6zpJwEDLXzUMiS'
+    api_key = os.getenv('pass')
     if not api_key:
         raise Exception("A key should be provided to invoke the endpoint")
 

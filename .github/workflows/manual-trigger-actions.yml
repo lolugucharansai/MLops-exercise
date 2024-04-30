@@ -82,7 +82,7 @@ jobs:
         run: |
           new_api_key=$(az ml online-endpoint show --name diabetesend --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --query apiKey -o tsv)
           curl -H "Authorization: Bearer ${{ secrets.RENDER_API }}" \
-          -X PATCH https://api.render.com/v1/services/mlops-exercise/env-vars/API_KEY \
+          -X PATCH https://api.render.com/v1/services/mlops-exercise/env-vars/pass \
           -H "Content-Type: application/json" \
           -d '{
             "pass": "'"$new_api_key"'"
