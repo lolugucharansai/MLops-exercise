@@ -78,16 +78,19 @@ jobs:
       #       deployment_name="diabetesdeployment"
       #       model_name="diabetes_model"
       #       az ml online-deployment update -n diabetesdeployment --endpoint diabetesend -f endpoint/deploy-model.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
-      - name: Update  API key on Render
+      
+      - name: Update API key on Render
         run: |
           # Retrieve the new API key from Azure
           new_api_key=$(az ml online-endpoint show --name diabetesend --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --query apiKey -o tsv)
-        
-          # Update the API key on Render
-          curl -H "Authorization: Bearer ${{ secrets.RENDER_API }}" \
+          echo "New API Key: $new_api_key"
+
+          # Update API key on Render
+          response=$(curl -v -H "Authorization: Bearer ${{ secrets.RENDER_API }}" \
                -X PATCH https://api.render.com/v1/services/srv-coodc1uv3ddc738lujgg/env-vars/pass \
                -H "Content-Type: application/json" \
                -d '{
                      "key": "pass",
                      "value": "'"$new_api_key"'"
-                   }'
+                   }')
+          echo "Response: $response"
