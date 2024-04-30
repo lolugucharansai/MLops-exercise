@@ -1,5 +1,7 @@
-setuptools
-pytest
-mlflow
-pandas
-scikit-learn
+streamlit
+urllib
+json
+os
+ssl
+
+
