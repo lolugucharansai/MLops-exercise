@@ -31,13 +31,16 @@ def main():
     # Prediction button
     if st.button('Predict', key='predict_button'):
         # Call the prediction function with the input values
+        
         result = predict_diabetes(pregnancies, plasma_glucose, diastolic_blood_pressure, triceps_thickness, serum_insulin, bmi, diabetes_pedigree, age)
         
-        # Display the result
-        if(result):
-            st.success('You may have diabetes. Please consult a doctor!')
+            
+        if(result==1):
+                st.success('You may have diabetes. Please consult a doctor!')
+        elif(result==0):
+                st.success('You may not have diabetes')
         else:
-            st.success('You may not have diabetes')
+                st.error('Error in prediction please check the output logs')
 
 if __name__ == '__main__':
     main()
