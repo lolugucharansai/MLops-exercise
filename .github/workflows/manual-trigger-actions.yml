@@ -82,7 +82,8 @@ jobs:
       - name: Update API key on Render
         run: |
           # Retrieve the new API key from Azure
-          new_api_key=$(az ml online-endpoint show --name diabetesend --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --query apiKey -o tsv)
+          credentials=$(az ml online-endpoint get-credentials --name diabetesend --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev)
+          new_api_key=$(echo $credentials | jq -r '.primaryKey')
           exit_code=$?
           if [ $exit_code -ne 0 ]; then
             echo "Failed to retrieve API key from Azure with exit code $exit_code"
@@ -101,3 +102,5 @@ jobs:
                      }
                    ]')
           echo "Response: $response"
+
+         
