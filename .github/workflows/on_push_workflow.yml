@@ -1,4 +1,4 @@
-name: Train Model
+name: CI/CD pipeline
 on:
   push:
     branches:
@@ -77,7 +77,7 @@ jobs:
         run: |
             deployment_name="diabetesdeployment"
             model_name="diabetes_model"
-            az ml online-deployment update -n diabetesdeployment --endpoint diabetesend -f endpoint/deploy-model.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
+            az ml online-deployment update -n diabetesdeployment --endpoint diabetesend -f endpoint/deployment-endpoint.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
       
       - name: Update API key on Render
         run: |

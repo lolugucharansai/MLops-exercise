@@ -4,7 +4,7 @@ endpoint_name: diabetesend
 model: azureml:diabetes_model@latest  
 environment:
   image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
-  conda_file: model/conda.yaml
+  conda_file: azureml:diabetes_model@latest/artifacts/model
 code_configuration:
   code: scripts
   scoring_script: score.py
