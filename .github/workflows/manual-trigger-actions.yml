@@ -89,7 +89,7 @@ jobs:
             echo "Failed to retrieve API key from Azure with exit code $exit_code"
             exit $exit_code
           fi
-          echo "New API Key: $new_api_key"
+          # echo "New API Key: $new_api_key"
 
           # Update API key on Render
           response=$(curl -v -H "Authorization: Bearer ${{ secrets.RENDER_API }}" \
@@ -101,6 +101,6 @@ jobs:
                        "value": "'"$new_api_key"'"
                      }
                    ]')
-          echo "Response: $response"
+          
 
          
