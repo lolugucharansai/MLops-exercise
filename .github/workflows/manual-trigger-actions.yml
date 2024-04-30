@@ -87,10 +87,12 @@ jobs:
 
           # Update API key on Render
           response=$(curl -v -H "Authorization: Bearer ${{ secrets.RENDER_API }}" \
-               -X PATCH https://api.render.com/v1/services/srv-coodc1uv3ddc738lujgg/env-vars/pass \
+               -X PUT https://api.render.com/v1/services/srv-coodc1uv3ddc738lujgg/env-vars \
                -H "Content-Type: application/json" \
-               -d '{
-                     "key": "pass",
-                     "value": "'"$new_api_key"'"
-                   }')
+               -d '[
+                     {
+                       "key": "pass",
+                       "value": "'"$new_api_key"'"
+                     }
+                   ]')
           echo "Response: $response"
