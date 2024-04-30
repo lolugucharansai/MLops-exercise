@@ -85,7 +85,7 @@ jobs:
         
           # Update the API key on Render
           curl -H "Authorization: Bearer ${{ secrets.RENDER_API }}" \
-               -X PATCH https://api.render.com/v1/services/mlops-exercise/env-vars/API_KEY \
+               -X PATCH https://api.render.com/v1/services/srv-coodc1uv3ddc738lujgg/env-vars/pass \
                -H "Content-Type: application/json" \
                -d '{
                      "key": "pass",
