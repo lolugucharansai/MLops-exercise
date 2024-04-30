@@ -46,42 +46,42 @@ jobs:
     environment: 
         name: production
     steps:
-      - name: Check out repo
-        uses: actions/checkout@v2
-      - name: Install az ml extension
-        run: az extension add -n ml -y
+      # - name: Check out repo
+      #   uses: actions/checkout@v2
+      # - name: Install az ml extension
+      #   run: az extension add -n ml -y
       # - name: Set up Python
       #   uses: actions/setup-python@v2
       #   with:
       #     python-version: '3.x'
       # - name: Install dependencies
       #   run: pip install -r requirements.txt
-      - name: Azure login
-        uses: azure/login@v1
-        with:
-          creds: ${{ env.PROD_AZURE_CREDENTIALS }}
-      - name: Retrain model
-        id: retrain
-        run: |
-               echo "Retraining model"
-               job_name="retrain-model-$(date +%Y%m%d%H%M%S)"
-               echo "JOB_NAME=$job_name" >> $GITHUB_ENV
-               az ml job create --file retrain_model/retrain_model.yml --name $job_name --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream 
-      - name: Register model
-        run: |
-            model_name="diabetes_model"
-            model_path="azureml://jobs/$JOB_NAME/outputs/artifacts/model"
-            az ml model create --name $model_name --type "mlflow_model" --path $model_path --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
+      # - name: Azure login
+      #   uses: azure/login@v1
+      #   with:
+      #     creds: ${{ env.PROD_AZURE_CREDENTIALS }}
+      # - name: Retrain model
+      #   id: retrain
+      #   run: |
+      #          echo "Retraining model"
+      #          job_name="retrain-model-$(date +%Y%m%d%H%M%S)"
+      #          echo "JOB_NAME=$job_name" >> $GITHUB_ENV
+      #          az ml job create --file retrain_model/retrain_model.yml --name $job_name --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream 
+      # - name: Register model
+      #   run: |
+      #       model_name="diabetes_model"
+      #       model_path="azureml://jobs/$JOB_NAME/outputs/artifacts/model"
+      #       az ml model create --name $model_name --type "mlflow_model" --path $model_path --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
        
-      - name: Deploy model to online endpoint
-        run: |
-            deployment_name="diabetesdeployment"
-            model_name="diabetes_model"
-            az ml online-deployment update -n diabetesdeployment --endpoint diabetesend -f endpoint/deploy-model.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
+      # - name: Deploy model to online endpoint
+      #   run: |
+      #       deployment_name="diabetesdeployment"
+      #       model_name="diabetes_model"
+      #       az ml online-deployment update -n diabetesdeployment --endpoint diabetesend -f endpoint/deploy-model.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
       - name: Update API key on Render
         run: |
           new_api_key=$(az ml online-endpoint show --name diabetesend --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --query apiKey -o tsv)
-          curl -H "Authorization: Bearer ${{ secrets.RENDER_API_TOKEN }}" \
+          curl -H "Authorization: Bearer ${{ secrets.RENDER_API }}" \
           -X PATCH https://api.render.com/v1/services/mlops-exercise/env-vars/API_KEY \
           -H "Content-Type: application/json" \
           -d '{
