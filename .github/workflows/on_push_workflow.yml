@@ -75,9 +75,9 @@ jobs:
        
       - name: Deploy model to online endpoint
         run: |
-            deployment_name="diabetesdeployment"
+            deployment_name="diabetesdeployment1"
             model_name="diabetes_model"
-            az ml online-deployment update -n diabetesdeployment --endpoint diabetesend -f endpoint/deployment-endpoint.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
+            az ml online-deployment update -n diabetesdeployment1 --endpoint diabetesend -f endpoint/deployment-endpoint.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
       
       - name: Update API key on Render
         run: |
