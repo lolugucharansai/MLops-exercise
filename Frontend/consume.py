@@ -35,14 +35,11 @@ def predict_diabetes(pregnancies, plasma_glucose, diastolic_blood_pressure, tric
     body = str.encode(json.dumps(data))
 
     url = 'https://diabetesend.eastus.inference.ml.azure.com/score'
-    # Replace this with the primary/secondary key, AMLToken, or Microsoft Entra ID token for the endpoint
+# Replace this with the primary/secondary key, AMLToken, or Microsoft Entra ID token for the endpoint
     api_key = os.getenv('pass')
     if not api_key:
         raise Exception("A key should be provided to invoke the endpoint")
 
-    # The azureml-model-deployment header will force the request to go to a specific deployment.
-    # Remove this header to have the request observe the endpoint traffic rules
-    headers = {'Content-Type':'application/json', 'Authorization':('Bearer '+ api_key), 'azureml-model-deployment': 'diabetesdeployment' }
 
     req = urllib.request.Request(url, body, headers)
 
