@@ -1,9 +1,9 @@
 name: CI/CD pipeline
 on:
-  # push:
-  #   branches:
-  #     - main
-  workflow_dispatch:
+  push:
+    branches:
+      - main
+  # workflow_dispatch:
 env:
   DEV_AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   PROD_AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
@@ -41,7 +41,7 @@ jobs:
         name: model
         path: ./outputs/model.pkl
   production:
-    # needs: development
+    needs: development
     runs-on: ubuntu-latest
     environment: 
         name: production
