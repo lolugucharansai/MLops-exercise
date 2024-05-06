@@ -63,7 +63,7 @@ jobs:
       - name: Retrain model
         id: retrain
         run: |
-               echo "Retraining model"
+               echo "Retraining model  "
                job_name="retrain-model-$(date +%Y%m%d%H%M%S)"
                echo "JOB_NAME=$job_name" >> $GITHUB_ENV
                az ml job create --file retrain_model/retrain_model.yml --name $job_name --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev --stream 
